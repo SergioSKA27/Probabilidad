@@ -99,59 +99,13 @@ def ejercicio_5():
             getans(omega)
         
     
-@st.experimental_fragment
-def ejercicio_8():
-    st.write("""
-    8) Muestre con un ejemplo que es posible tener 3 eventos $A, B$ y $C$ tales que $P(A∩B ∩C) =
-P(A)P(B)P(C)$ pero de tal manera que estos eventos no sean independientes.
-""")
-    
-    st.write("""
-             Consideremos el siguiente experimento:
 
-Lanzamos dos dados de seis caras numeradas del 1 al 6. Definimos los siguientes eventos:
-
-A: Sacar un número mayor que 3 en el primer dado.
-
-B: Sacar un número par en el segundo dado.
-
-C: Sacar la suma de los dos dados mayor que 8.
-""")
-    
-    omega = list(itertools.product(range(1,7), repeat=2))
-    A = set([(i, j) for i, j in omega if i > 3])
-    B = set([(i, j) for i, j in omega if j % 2 == 0])
-    C = set([(i, j) for i, j in omega if i + j > 10])
-    
-    st.write(f'El espacio muestral $\Omega$ es:')
-    st.write(f"{set(omega)}")
-    st.write(f'El evento $A$ es:')
-    st.write(f"$A = {A}$")
-    st.write(f'El evento $B$ es:')
-    st.write(f"$B = {B}$")
-    st.write(f'El evento $C$ es:')
-    st.write(f"$C = {C}$")
-    
-    st.write(f'El evento $A∩B∩C$ es:')
-    st.write(f"$A∩B∩C = {(A.intersection(B)).intersection(C)}$")
-    
-    st.write(f'La probabilidad de $P(A)$ es:')
-    st.write(f"$P(A) = {probability(A, omega)}$")
-    st.write(f'La probabilidad de $P(B)$ es:')
-    st.write(f"$P(B) = {probability(B, omega)}$")
-    st.write(f'La probabilidad de $P(C)$ es:')
-    st.write(f"$P(C) = {probability(C, omega)}$")
-    st.write(f'La probabilidad de $P(A∩B∩C)$ es:')
-    st.write(f"$P(A∩B∩C) = {probability((A.intersection(B)).intersection(C), omega)}$")
-    st.write(f'La probabilidad de $P(A)P(B)P(C)$ es:')
-    st.write(f"$P(A)P(B)P(C) = {probability(A, omega)*probability(B, omega)*probability(C, omega)}$")
-    
 @st.experimental_fragment
 def ejercicio_14():
     
     
     st.write("""
-    De una urna que contiene 10 bolas rojas, 10 bolas negras y 10 bolas blancas, se seleccionan
+    14) De una urna que contiene 10 bolas rojas, 10 bolas negras y 10 bolas blancas, se seleccionan
 2 bolas al azar y sin reemplazo. Calcule la probabilidad de que las dos bolas seleccionadas sean de
 distinto color.""")
     
@@ -177,7 +131,7 @@ distinto color.""")
 @st.experimental_fragment
 def ejercicio_18():
     st.write("""
-     Una urna contiene 2N bolas numeradas del 1 al 2N. Un experimento consiste en elegir
+    18) Una urna contiene 2N bolas numeradas del 1 al 2N. Un experimento consiste en elegir
 al azar una bola de esa urna, dejándola fuera, y después, en elegir al azar una segunda. Calcule la
 probabilidad de que la suma de los números elegidos sea par.
     """)
@@ -212,7 +166,7 @@ def ejercicio_19():
         
             
     st.write("""
-    Una urna contiene 20 bolas: 5, 8 azúles, y 7 rojas. Seleccionamos 4 bolas al azar. Calcula
+    19) Una urna contiene 20 bolas: 5, 8 azúles, y 7 rojas. Seleccionamos 4 bolas al azar. Calcula
 la probabilidad de los siguientes eventos::
 
 • todas sean rojas.
@@ -268,15 +222,16 @@ def ejercicio_20():
         return omega
             
     st.write("""
-    ) Dos personas A y B, quedan de verse en un determinado lugar a las 12 hrs. Cada una
+    20) Dos personas A y B, quedan de verse en un determinado lugar a las 12 hrs. Cada una
 de ellas llega al lugar de la cita en un tiempo al azar entre las 12 y a las 12 : 30 hrs. Una vez que
 llega al lugar de la cita, la persona A está dispuesta a esperar a lo más 5 minutos a que llegue la
 persona B, mientras que la persona B está dispuesta a esperar a la persona A a lo más 10 minutos.
-¿Cuál es la probabilidad de que las 2 personas se encuentren? (Resuelve este problema usando
-probabilidad frecuentista).
+¿Cuál es la probabilidad de que las 2 personas se encuentren? 
+
+**(Resuelve este problema usando probabilidad frecuentista)**.
 """)
     
-    time = st.number_input('Ingrese el número de simulaciones:', min_value=1, value=10)
+    time = st.number_input('Ingrese el número de simulaciones:', min_value=1, value=100)
     
     omega = simulate(time)
     st.write(f'El espacio muestral $\Omega$ es:')
@@ -291,23 +246,20 @@ probabilidad frecuentista).
     st.write(f'La probabilidad de $P(A)$ es:')
     st.write(f"$P(A) = {probability(A, omega)}$")
    
-tabs = st.tabs(["Ejercicio 5", "Ejercicio 8", "Ejercicio 14", "Ejercicio 18", "Ejercicio 19", "Ejercicio 20"])   
+tabs = st.tabs(["Ejercicio 5", "Ejercicio 14", "Ejercicio 18", "Ejercicio 19", "Ejercicio 20"])   
     
 
 with tabs[0]:
     ejercicio_5()
 
 with tabs[1]:
-    ejercicio_8()
-
-with tabs[2]:
     ejercicio_14()
     
-with tabs[3]:
+with tabs[2]:
     ejercicio_18()
 
-with tabs[4]:
+with tabs[3]:
     ejercicio_19()
 
-with tabs[5]:
+with tabs[4]:
     ejercicio_20()
