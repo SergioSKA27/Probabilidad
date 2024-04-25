@@ -29,7 +29,7 @@ def ejercicio_5():
     
     def getans(omega):
         nm_combs = list(itertools.product(range(2, 13), range(0, 6)))
-        st.write(f'Los valores posibles de n y m son:')
+        st.write('Los valores posibles de n y m son:')
         st.write(f"{set(nm_combs)}")
         for n, m in nm_combs:
             s = get_eventS(n)
@@ -59,7 +59,7 @@ def ejercicio_5():
                     st.write(f'La probabilidad de $P(D_{m})P(S_{n})$ es: {ps*pd}')
         #events = get_eventS(n)
         #eventd = get_eventD(m)
-        st.write(f'No Existe $(n, m)$ tal que $P(S_n ∩ D_m) = P(S_n)P(D_m)$')
+        st.write('No Existe $(n, m)$ tal que $P(S_n ∩ D_m) = P(S_n)P(D_m)$')
         
     st.write( """
     5) Supongamos que se lanzan dos dados honestos. Considere los siguientes eventos:
@@ -77,7 +77,7 @@ def ejercicio_5():
     
     omega = list(itertools.product(range(1,7), repeat=2))
     
-    st.write(f'El espacio muestral $\Omega$ es:')
+    st.write('El espacio muestral $\Omega$ es:')
     st.write(f"{set(omega)}")
     s = get_eventS(n)
     d = get_eventD(m)
@@ -114,17 +114,17 @@ distinto color.""")
     B_red = ["R"+str(i) for i in range(1, 11)]
     
     omega = list(itertools.combinations(B_white + B_black + B_red, 2))
-    st.write(f'El espacio muestral $\Omega$ es:')
+    st.write('El espacio muestral $\Omega$ es:')
     with st.expander('Ver espacio muestral'):
         st.write(f"{set(omega)}")
     
     A = set([(i, j) for i, j in omega if i[0] != j[0]])
     
-    st.write(f'El evento $A$ es:')
+    st.write('El evento $A$ es:')
     with st.expander('Ver evento A'):
         st.write(f"{set(A)}")
     
-    st.write(f'La probabilidad de $P(A)$ es:')
+    st.write('La probabilidad de $P(A)$ es:')
     st.write(f"$P(A) = {probability(A, omega)}$")
     
 
@@ -139,17 +139,17 @@ probabilidad de que la suma de los números elegidos sea par.
     N = st.number_input('Ingrese el valor de N:', min_value=1, value=1)
     
     omega = list(itertools.combinations(range(1, 2*N+1), 2))
-    st.write(f'El espacio muestral $\Omega$ es:')
+    st.write('El espacio muestral $\Omega$ es:')
     with st.expander('Ver espacio muestral'):
         st.write(f"{set(omega)}")
     
     A = set([(i, j) for i, j in omega if (i+j) % 2 == 0])
     
-    st.write(f'El evento $A$ es:')
+    st.write('El evento $A$ es:')
     with st.expander('Ver evento A'):
         st.write(f"{set(A)}")
     
-    st.write(f'La probabilidad de $P(A)$ es:')
+    st.write('La probabilidad de $P(A)$ es:')
     st.write(f"$P(A) = {probability(A, omega)}$")
 
 
@@ -183,39 +183,39 @@ la probabilidad de los siguientes eventos::
     B_white = ["W"+str(i) for i in range(1, 6)]
     
     omega = list(itertools.combinations(B_blue + B_red + B_white, 4))
-    st.write(f'El espacio muestral $\Omega$ es:')
+    st.write('El espacio muestral $\Omega$ es:')
     with st.expander('Ver espacio muestral'):
         st.write(f"{set(omega)}")
      
-    st.write(f'El evento $A$ (todas sean rojas) es:')
-    A = set([(i, j, k, l) for i, j, k, l in omega if i[0] == 'R' and j[0] == 'R' and k[0] == 'R' and l[0] == 'R'])
+    st.write('El evento $A$ (todas sean rojas) es:')
+    A = set([(i, j, k, ll) for i, j, k, ll in omega if i[0] == 'R' and j[0] == 'R' and k[0] == 'R' and ll[0] == 'R'])
     with st.expander('Ver evento A'):
         st.write(f"{set(A)}")
     
-    st.write(f'La probabilidad de $P(A)$ es:')
+    st.write('La probabilidad de $P(A)$ es:')
     st.write(f"$P(A) = {probability(A, omega)}$")
     
-    st.write(f'El evento $B$ (2 sean azules, 1 sea blanca y 1 sea roja) es:')
-    B = set([(i, j, k, l) for i, j, k, l in omega if is_eventB([i, j, k, l])])
+    st.write('El evento $B$ (2 sean azules, 1 sea blanca y 1 sea roja) es:')
+    B = set([(i, j, k, ll) for i, j, k, ll in omega if is_eventB([i, j, k, ll])])
     with st.expander('Ver evento B'):
         st.write(f"{set(B)}")
     
-    st.write(f'La probabilidad de $P(B)$ es:')
+    st.write('La probabilidad de $P(B)$ es:')
     st.write(f"$P(B) = {probability(B, omega)}$")
     
-    st.write(f'El evento $C$ (exactamente 4 sean blancas) es:')
-    C = set([(i, j, k, l) for i, j, k, l in omega if i[0] == 'W' and j[0] == 'W' and k[0] == 'W' and l[0] == 'W'])
+    st.write('El evento $C$ (exactamente 4 sean blancas) es:')
+    C = set([(i, j, k, ll) for i, j, k, ll in omega if i[0] == 'W' and j[0] == 'W' and k[0] == 'W' and ll[0] == 'W'])
     with st.expander('Ver evento C'):
         st.write(f"{set(C)}")
     
-    st.write(f'La probabilidad de $P(C)$ es:')
+    st.write('La probabilidad de $P(C)$ es:')
     st.write(f"$P(C) = {probability(C, omega)}$")
 
 
 def ejercicio_20():
     def simulate(t):
         omega = []
-        for i in range(t):
+        for _ in range(t):
             A = random.uniform(0, 30)
             B = random.uniform(0, 30)
             omega.append((A, B))
@@ -234,16 +234,16 @@ persona B, mientras que la persona B está dispuesta a esperar a la persona A a 
     time = st.number_input('Ingrese el número de simulaciones:', min_value=1, value=100)
     
     omega = simulate(time)
-    st.write(f'El espacio muestral $\Omega$ es:')
+    st.write('El espacio muestral $\Omega$ es:')
     with st.expander('Ver espacio muestral'):
         st.write(f"{set(omega)}")
     A = set([(i, j) for i, j in omega if abs(i-j) <= 5 or abs(j-i) <= 10])
     
-    st.write(f'El evento $A$ (las dos personas se encuentran) es:')
+    st.write('El evento $A$ (las dos personas se encuentran) es:')
     with st.expander('Ver evento A'):
         st.write(f"{set(A)}")
     
-    st.write(f'La probabilidad de $P(A)$ es:')
+    st.write('La probabilidad de $P(A)$ es:')
     st.write(f"$P(A) = {probability(A, omega)}$")
    
 tabs = st.tabs(["Ejercicio 5", "Ejercicio 14", "Ejercicio 18", "Ejercicio 19", "Ejercicio 20"])   
