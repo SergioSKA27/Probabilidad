@@ -42,8 +42,8 @@ class Evaluator:
             "and": 0,
             "or": -1,
             "not": 0,
-            "#": 0,
-            "$": 0,
+            "#": 99,
+            "$": 99,
         }
 
         self.association_order = {
