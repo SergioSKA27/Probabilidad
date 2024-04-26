@@ -1,14 +1,11 @@
 import streamlit as st
 
-@st.experimental_fragment
 def outcomes_editor():
     if 'outcomes' not in st.session_state:
         st.session_state.outcomes = [str(i) for i in range(2)]
     if 'outcomes_numb' not in st.session_state:
         st.session_state.outcomes_numb = 2
 
-    if 'signal' not in st.session_state:
-        st.session_state.signal = False
 
     def reset_outcomes():
         st.session_state.outcomes = []
@@ -35,7 +32,6 @@ def outcomes_editor():
                     else:
                         continue
 
-                st.session_state.signal = True
         else:
             cols = st.columns(2)
             if cols[1].button('Agregar resultado',use_container_width=True):
@@ -46,7 +42,6 @@ def outcomes_editor():
                 else:
                     st.toast('Resultado ya agregado',icon='❌')
 
-                st.session_state.signal = True
 
         st.write('Resultados actuales:')
         st.write(str(set(st.session_state.outcomes)))

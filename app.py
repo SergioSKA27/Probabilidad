@@ -8,13 +8,6 @@ st.set_page_config(layout="wide")
 
 
 
-if 'signal' not in st.session_state:
-    st.session_state.signal = False
-else:
-    if st.session_state.signal:
-        st.session_state.signal = False
-        st.rerun()
-
 def conditional_probability(A, B):
     return len(A.intersection(B)) / len(B)
 
@@ -49,8 +42,11 @@ if __name__ == '__main__':
 
 st.write('###### Editor de Eventos')
 
+event_name = st.text_input('Nombre del Evento', 'A')
 create_by = st.selectbox('Crear Evento por', ['Regla', 'Grupo Combinatorio', 'Seleccion', 'Union', 'Interseccion', 'Diferencia', 'Complemento',])
 
+with st.expander('Outcomes Vars', expanded=False):
+    st.write(st.session_state.outcomes)
 if create_by == 'Regla':
 
     symbs = list(st.session_state.outcomes)
@@ -59,11 +55,9 @@ if create_by == 'Regla':
 
     evaluator = Evaluator(st.session_state.omega, list(map(str, symbs)))
     evaluator.set_rule(rule)
-
-    st.write(evaluator.tokenize(rule))
     st.write(evaluator.to_sufix())
+    st.write(evaluator.find_all())
 
-    st.latex(symbs)
 
     r"""
     ## GUIA DE USO

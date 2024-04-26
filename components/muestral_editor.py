@@ -7,7 +7,6 @@ from .combinationrep_editor import combinationrep_editor
 
 
 
-@st.experimental_fragment
 def muestral_space_editor():
 
     st.write('###### Editor de Espacio Muestral')
