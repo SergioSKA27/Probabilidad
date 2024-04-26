@@ -1,89 +1,133 @@
 import streamlit as st
-import sympy as sp
-from components.outcomes_editor import outcomes_editor
+
+from components.event_editor import event_editor
 from components.muestral_editor import muestral_space_editor
-from components.expr_eval import Evaluator
+from components.outcomes_editor import outcomes_editor
 
 st.set_page_config(layout="wide")
 
+if "events" not in st.session_state:
+    st.session_state.events = {}
 
+if "events_workspace" not in st.session_state:
+    st.session_state.events_workspace = set()
 
 def conditional_probability(A, B):
     return len(A.intersection(B)) / len(B)
 
+
 def probability(A, omega):
     return len(A) / len(omega)
 
+
 def current_config():
     with st.container(border=True):
-        st.write('###### Configuración Actual')
-        st.write('Outcomes:', st.session_state.outcomes)
-        st.write('Longitud de Outcomes:', st.session_state.outcomes_numb)
-        with st.expander('Espacio Muestral',expanded=True):
+        st.write("###### Configuración Actual")
+        st.write("Outcomes:", st.session_state.outcomes)
+        st.write("Longitud de Outcomes:", st.session_state.outcomes_numb)
+        with st.expander("Espacio Muestral", expanded=True):
             st.write(st.session_state.omega)
-        st.write('Longitud de Espacio Muestral:', len(st.session_state.omega))
-        st.write('Grupos Combinatorios:', st.session_state.combinatorial_groups)
+        st.write("Longitud de Espacio Muestral:", len(st.session_state.omega))
+        st.write("Grupos Combinatorios:", st.session_state.combinatorial_groups)
+        st.write("Eventos:", st.session_state.events)
 
 
-if __name__ == '__main__':
-    with st.popover('Outcomes Editor', help='Edita los resultados posibles de un experimento',use_container_width=True):
+
+def workspace_view():
+    with st.container(border=True):
+        st.write("###### Espacio de Trabajo")
+        st.write("Eventos en el espacio de trabajo:", str(st.session_state.events_workspace))
+
+def event_view():
+    if len(st.session_state.events_workspace) == 0:
+        return
+    with st.container(border=True):
+        st.write("###### Eventos")
+        selected_event = st.selectbox(
+            "Selecciona un evento", list(st.session_state.events.keys())
+        )
+        with st.expander("Ver Evento", expanded=True):
+            st.write(str(st.session_state.events[selected_event]))
+
+
+if __name__ == "__main__":
+    with st.popover(
+        "Outcomes Editor",
+        help="Edita los resultados posibles de un experimento",
+        use_container_width=True,
+    ):
         outcomes_editor()
 
-    with st.popover('Muestral Space Editor', help='Edita el espacio muestral de un experimento',use_container_width=True):
+    with st.popover(
+        "Muestral Space Editor",
+        help="Edita el espacio muestral de un experimento",
+        use_container_width=True,
+    ):
         muestral_space_editor()
 
-    lateral, main = st.columns([1, 4])
+    lateral, main = st.columns([0.4, 0.6])
+    if lateral.toggle("Añadir Evento al espacio de trabajo",):
+        addev = main.selectbox(
+            "Evento a añadir",
+            list(st.session_state.events.keys()),
+            placeholder="Selecciona un evento",
+        )
+        addevcols = main.columns([0.6, 0.4], gap="large")
+        if addevcols[1].button(
+            "Añadir Evento", use_container_width=True,
+        ):
+            if addev not in st.session_state.events_workspace:
+                st.session_state.events_workspace.add(addev)
+                st.toast("Evento añadido con éxito", icon="🎉")
+            else:
+                st.toast("Evento ya añadido", icon="❌")
+
+
+    if lateral.toggle("Calcular Probabilidad Condicional",):
+        with main.expander("Calculadora de Probabilidad Condicional", expanded=True):
+            A = main.selectbox(
+                "Evento A",
+                list(st.session_state.events.keys()),
+                placeholder="Selecciona un evento",
+            )
+            B = main.selectbox(
+                "Evento B",
+                list(st.session_state.events.keys()),
+                placeholder="Selecciona un evento",
+            )
+            if main.button("Calcular Probabilidad Condicional"):
+                prob_cond = conditional_probability(
+                    st.session_state.events[A], st.session_state.events[B]
+                )
+                st.write(f"La probabilidad condicional de {A} dado {B} es {prob_cond}")
+                st.write(f"P({A}|{B}) = {len(st.session_state.events[A].intersection(st.session_state.events[B]))}/{len(st.session_state.events[B])}")
+
+    if lateral.toggle("Calcular Probabilidad",):
+        with main.expander("Calculadora de Probabilidad", expanded=True):
+            A = main.selectbox(
+                "Evento",
+                list(st.session_state.events.keys()),
+                placeholder="Selecciona un evento",
+            )
+            if main.button("Calcular Probabilidad"):
+                prob = probability(st.session_state.events[A], st.session_state.omega)
+                st.write(f"La probabilidad de {A} es {prob}")
+                st.write(f"P({A}) = {len(st.session_state.events[A])}/{len(st.session_state.omega)}")
+
     with lateral:
-        with st.popover('Configuración Actual', help='Muestra la configuración actual del experimento',use_container_width=True):
+        with st.popover(
+            "Configuración Actual",
+            help="Muestra la configuración actual del experimento",
+            use_container_width=True,
+        ):
             current_config()
 
+        with st.popover(
+            "Event Editor",
+            help="Edita los eventos de un experimento",
+            use_container_width=True,
+        ):
+            event_editor()
 
-
-
-st.write('###### Editor de Eventos')
-
-event_name = st.text_input('Nombre del Evento', 'A')
-create_by = st.selectbox('Crear Evento por', ['Regla', 'Grupo Combinatorio', 'Seleccion', 'Union', 'Interseccion', 'Diferencia', 'Complemento',])
-
-with st.expander('Outcomes Vars', expanded=False):
-    st.write(st.session_state.outcomes)
-if create_by == 'Regla':
-
-    symbs = list(st.session_state.outcomes)
-
-    rule = st.text_input('Regla', 'x # omega;')
-
-    evaluator = Evaluator(st.session_state.omega, list(map(str, symbs)))
-    evaluator.set_rule(rule)
-    st.write(evaluator.to_sufix())
-    st.write(evaluator.find_all())
-
-
-    r"""
-    ## GUIA DE USO
-    Para crear un evento por regla, debes seguir los siguientes pasos:
-    1. Escribe el nombre de la variable que deseas utilizar.
-    2. Escribe la regla que deseas utilizar.
-        - '#' para referenciar pertenencia a un conjunto.
-        - '\[{posición - 1}]$' para referenciar una posición específica en un conjunto.
-        - '<', '>', '<=', '>=', '==', '!=' para comparaciones.
-        - 'and', 'or', 'not' para operaciones lógicas.
-        - '+', '-', '*', '/', '**' para operaciones aritméticas.
-        - '(', ')' para agrupar operaciones.
-        - Use ';' para finalizar la regla no se mezclen operaciones lógicas y aritméticas.
-    3. Presiona el botón 'Crear Evento'.
-
-    Ejemplos:
-    - Para crear el evento de que el outcome x este en cualquier conjunto del espacio muestral,
-    escribe 'x # omega;'. Esto creará el evento
-    $$\{x \in \omega | \forall \omega \in \Omega\}$$.
-    - Para crear el evento de que el outcome x se encuentre en la posición 2 de cualquier conjunto del espacio muestral,
-    escribe 'x # omega[1];'. Esto creará el evento
-    $$\{x \in \omega_1 | \forall \omega \in \Omega\}$$.
-    - Para crear el evento de que el outcome x sea mayor a 5 y menor a 10,
-    escribe 'x > 5; and x < 10;'. Esto creará el evento
-    $$\{x \in \omega | x > 5 \land x < 10\}$$.
-    - Para crear el evento donde dados dos outcomes x e y, su suma sea mayor a 10,
-    escribe 'x; + y; > 10;'. Esto creará el evento
-    $$\{x, y \in \omega | x + y > 10 \land \forall \omega \in \Omega\}$$.
-    """
+        workspace_view()
+        event_view()
