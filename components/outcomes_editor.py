@@ -3,9 +3,12 @@ import streamlit as st
 @st.experimental_fragment
 def outcomes_editor():
     if 'outcomes' not in st.session_state:
-        st.session_state.outcomes = []
+        st.session_state.outcomes = [str(i) for i in range(2)]
     if 'outcomes_numb' not in st.session_state:
         st.session_state.outcomes_numb = 2
+
+    if 'signal' not in st.session_state:
+        st.session_state.signal = False
 
     def reset_outcomes():
         st.session_state.outcomes = []
@@ -23,7 +26,7 @@ def outcomes_editor():
             with st.expander('Ver índices'):
                 st.write(str(set(outcomes_index)))
             cols = st.columns(2)
-            if cols[0].button('Añadir Indices'):
+            if cols[1].button('Añadir Indices',use_container_width=True):
                 for i in outcomes_index:
                     if i not in st.session_state.outcomes and len(st.session_state.outcomes) < outcomes:
                         st.session_state.outcomes.append(i)
@@ -31,15 +34,20 @@ def outcomes_editor():
                         st.toast('Número máximo de resultados alcanzado',icon='❌')
                     else:
                         continue
+
+                st.session_state.signal = True
         else:
             cols = st.columns(2)
-            if cols[0].button('Agregar resultado'):
+            if cols[1].button('Agregar resultado',use_container_width=True):
                 if outcome not in st.session_state.outcomes and len(st.session_state.outcomes) < outcomes:
                     st.session_state.outcomes.append(outcome)
                 elif len(st.session_state.outcomes) >= outcomes:
                     st.toast('Número máximo de resultados alcanzado',icon='❌')
                 else:
                     st.toast('Resultado ya agregado',icon='❌')
+
+                st.session_state.signal = True
+
         st.write('Resultados actuales:')
         st.write(str(set(st.session_state.outcomes)))
         if len(st.session_state.outcomes) < outcomes:
@@ -48,8 +56,8 @@ def outcomes_editor():
                 for i in range(outcomes-len(st.session_state.outcomes)):
                     if f'$IDD_{i+1}' not in st.session_state.outcomes and len(st.session_state.outcomes) < outcomes:
                         st.session_state.outcomes.append(f'IDD_{i+1}')
-                    
-        cols[1].button('Resetear resultados', on_click=reset_outcomes)
+
+        cols[0].button('Resetear resultados', on_click=reset_outcomes,use_container_width=True)
     else:
         reset_outcomes()
         st.session_state.outcomes = range(outcomes)

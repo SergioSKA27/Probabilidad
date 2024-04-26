@@ -9,6 +9,7 @@ from .combinationrep_editor import combinationrep_editor
 
 @st.experimental_fragment
 def muestral_space_editor():
+
     st.write('###### Editor de Espacio Muestral')
     if 'omega' not in st.session_state:
         st.session_state.omega = set()
