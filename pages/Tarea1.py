@@ -2,6 +2,9 @@ import streamlit as st
 import itertools
 import random
 
+st.set_page_config(layout="wide")
+st.markdown("<style>#MainMenu, header, footer {visibility: hidden;} </style>", unsafe_allow_html=True)
+
 
 st.title('Tarea 1: Ejercicios de Python')
 
