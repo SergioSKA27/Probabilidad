@@ -31,8 +31,6 @@ def current_config():
         st.write("Grupos Combinatorios:", st.session_state.combinatorial_groups)
         st.write("Eventos:", st.session_state.events)
 
-
-
 def workspace_view():
     with st.container(border=True):
         st.write("###### Espacio de Trabajo")
@@ -44,11 +42,40 @@ def event_view():
     with st.container(border=True):
         st.write("###### Eventos")
         selected_event = st.selectbox(
-            "Selecciona un evento", list(st.session_state.events.keys())
+            "Selecciona un evento", list(st.session_state.events.keys()),
+            label_visibility="collapsed"
         )
         with st.expander("Ver Evento", expanded=True):
             st.write(str(st.session_state.events[selected_event]))
 
+def probability_calculator_conditional(main):
+    A = main.selectbox(
+                "Evento A",
+                list(st.session_state.events.keys()),
+                placeholder="Selecciona un evento",
+            )
+    B = main.selectbox(
+        "Evento B",
+        list(st.session_state.events.keys()),
+        placeholder="Selecciona un evento",
+    )
+    if main.button("Calcular Probabilidad Condicional"):
+        prob_cond = conditional_probability(
+            st.session_state.events[A], st.session_state.events[B]
+        )
+        st.write(f"La probabilidad condicional de {A} dado {B} es {prob_cond}")
+        st.write(f"$P({A}|{B}) = {len(st.session_state.events[A].intersection(st.session_state.events[B]))}/{len(st.session_state.events[B])}$")
+
+def probability_calculator(main):
+    A = main.selectbox(
+                "Evento",
+                list(st.session_state.events.keys()),
+                placeholder="Selecciona un evento",
+            )
+    if main.button("Calcular Probabilidad"):
+        prob = probability(st.session_state.events[A], st.session_state.omega)
+        st.write(f"La probabilidad de {A} es {prob}")
+        st.write(f"$P({A}) = {len(st.session_state.events[A])}/{len(st.session_state.omega)}$")
 
 if __name__ == "__main__":
     with st.popover(
@@ -84,35 +111,11 @@ if __name__ == "__main__":
 
 
     if lateral.toggle("Calcular Probabilidad Condicional",):
-        with main.expander("Calculadora de Probabilidad Condicional", expanded=True):
-            A = main.selectbox(
-                "Evento A",
-                list(st.session_state.events.keys()),
-                placeholder="Selecciona un evento",
-            )
-            B = main.selectbox(
-                "Evento B",
-                list(st.session_state.events.keys()),
-                placeholder="Selecciona un evento",
-            )
-            if main.button("Calcular Probabilidad Condicional"):
-                prob_cond = conditional_probability(
-                    st.session_state.events[A], st.session_state.events[B]
-                )
-                st.write(f"La probabilidad condicional de {A} dado {B} es {prob_cond}")
-                st.write(f"P({A}|{B}) = {len(st.session_state.events[A].intersection(st.session_state.events[B]))}/{len(st.session_state.events[B])}")
-
+        with main.container(border=True):
+            probability_calculator_conditional(main)
     if lateral.toggle("Calcular Probabilidad",):
-        with main.expander("Calculadora de Probabilidad", expanded=True):
-            A = main.selectbox(
-                "Evento",
-                list(st.session_state.events.keys()),
-                placeholder="Selecciona un evento",
-            )
-            if main.button("Calcular Probabilidad"):
-                prob = probability(st.session_state.events[A], st.session_state.omega)
-                st.write(f"La probabilidad de {A} es {prob}")
-                st.write(f"P({A}) = {len(st.session_state.events[A])}/{len(st.session_state.omega)}")
+        with main.container(border=True):
+            probability_calculator(main)
 
     with lateral:
         with st.popover(
