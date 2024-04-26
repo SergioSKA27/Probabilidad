@@ -8,16 +8,21 @@ st.set_page_config(layout="wide")
 
 
 st.markdown("""
-    <style>
-        #MainMenu, header, footer {visibility: hidden;}
-        .appview-container .main .block-container
-        {
-            padding-top: 0.5px;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            padding-bottom: 0.5rem;
-        }
-    </style>
+<style>
+#MainMenu, header, footer {visibility: hidden;}
+.appview-container .main .block-container
+{
+    padding-top: 0.5px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 0.5rem;
+}
+.reportview-container {
+background: url("url_goes_here")
+background: rgb(250,112,112);
+background: linear-gradient(180deg, rgba(250,112,112,1) 35%, rgba(112,181,250,1) 100%);
+}
+</style>
 """, unsafe_allow_html=True)
 
 if "events" not in st.session_state:
@@ -169,6 +174,15 @@ if __name__ == "__main__":
         event_view()
 
 
-
+if len(st.session_state.events_workspace) < 1:
+    main.markdown(
+        """
+        <img src="https://clipart-library.com/images/gTe5a9yKc.gif"
+        alt="No hay eventos en el espacio de trabajo"
+        style="display: block;place-items: center; margin-left: auto; margin-right: auto; width: 50%;"
+        />
+        """,
+        unsafe_allow_html=True,
+    )
 
 lateral.page_link('app.py',label='Página Principal',use_container_width=True,icon='🏠')
